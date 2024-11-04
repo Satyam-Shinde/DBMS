@@ -1,0 +1,38 @@
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+
+public class mongodb {
+    public static void main(String[] args) {
+        // Create a MongoDB client
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+
+        // Get a database
+        MongoDatabase database = mongoClient.getDatabase("fazin");
+
+        // Get a collection
+        MongoCollection collection = database.getCollection("studentcollection");
+
+        // Query the collection
+        MongoCursor cursor = collection.find().iterator();
+
+        try {
+            while (cursor.hasNext()) {
+                Document document = (Document) cursor.next();
+                // Access and process the data in the document
+                String studentName = document.getString("name");
+                Double studentmarks = document.getDouble("marks");
+                
+                System.out.println("name: " + studentName + ", marks: " + studentmarks);
+            }
+        } finally {
+            cursor.close(); // Don't forget to close the cursor when done
+        }
+
+        // Close the MongoDB client
+        mongoClient.close();
+    }
+}
