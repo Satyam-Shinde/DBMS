@@ -1,0 +1,70 @@
+import java.sql.*;
+import java.sql.DriverManager;
+public class connect {
+// JDBC driver name and database URL
+static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+static final String DB_URL = "jdbc:mysql://localhost:3306/ry?
+autoReconnect=true&useSSL=false";
+public static void main(String[] args) {
+Connection conn = null;
+Statement stmt = null;
+try{
+//STEP 2: Register JDBC driver
+Class.forName("com.mysql.cj.jdbc.Driver");
+//STEP 3: Open a connection
+System.out.println("Connecting to database...");
+conn = DriverManager.getConnection(DB_URL,"root","mysql");
+//STEP 4: statement creation
+System.out.println("Creating statement...");
+stmt = conn.createStatement();
+String sql;
+//insert record
+sql ="INSERT INTO emp VALUES (5, 'Tanvi', 'Patil', 20)";
+stmt.executeUpdate(sql);
+//update record
+sql ="Update emp Set f_name='Pournima' where id=6";
+stmt.executeUpdate(sql);
+//delete record
+sql ="Delete from emp where id=4";
+stmt.executeUpdate(sql);
+//show resultset
+sql = "SELECT id, f_name, l_name, age FROM emp";
+ResultSet rs = stmt.executeQuery(sql);
+//STEP 5: Extract data from result set
+while(rs.next()){
+//Retrieve by column name
+int id = rs.getInt("id");
+int age = rs.getInt("age");
+String first = rs.getString("f_name");
+String last = rs.getString("l_name");
+//Display values
+System.out.print("ID: " + id);
+System.out.print(", Age: " + age);
+System.out.print(", First: " + first);
+System.out.println(", Last: " + last);
+} //STEP 6: Clean-up environment
+rs.close();
+stmt.close();
+conn.close();
+}catch(SQLException se){
+//Handle errors for JDBC
+se.printStackTrace();
+}catch(Exception e){
+//Handle errors for Class.forName
+e.printStackTrace();
+}finally{
+//finally block used to close resources
+try{
+if(stmt!=null)
+stmt.close();
+}catch(SQLException se2){
+}// nothing can be done
+try{
+if(conn!=null)
+conn.close();
+}catch(SQLException se){
+se.printStackTrace();
+}//end finally try
+}//end try
+}//end main
+}
