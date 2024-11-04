@@ -11,7 +11,7 @@ insert into lib_borrow(roll_no, dateofIssue, NameofBook, statuss) values(1,'2024
 select * from lib_borrow;
 
 -- Create table fine
-create table Fine(roll_no int, s_date date, amount int(5), foreign key(roll_no) references lib_borrow(roll_no));
+create table Fine(roll_no int, s_date date, amount int, foreign key(roll_no) references lib_borrow(roll_no));
 
 -- desc Fine
 desc Fine;
@@ -19,21 +19,35 @@ desc Fine;
 delimiter $
 create procedure calfine(in roll int)
 begin
-declare fine int;
-declare noofDays int;
-declare issuedDate int;
-declare exit handler for sqlexception select 
-'Create table defination';
-select dateofIssue into issuedDate from lib_borrow where roll_no=roll;
-select datediff(curdate(), issuedDate) into noofDays;
-if noofDays > 15
-and noofDays<=30 then set fine = noofDays*5;
-insert into Fine values(roll,curdate(),fine);
-elseif noofDays>30 then set fine=noofDays*50;
-insert into Fine values(roll,curdate(),fine);
-else insert into Fine values(roll, curdate(),0);
-end if;
-update lib_borrow set statuss="R" where roll_no=roll;
+    declare fine int default 0;
+    declare noofDays int;
+    declare issuedDate date;
+    
+    -- Exit handler for any SQL exception
+    declare exit handler for sqlexception
+    begin
+        select 'An SQL exception occurred';
+    end;
+
+    -- Get the issued date for the given roll number
+    select dateofIssue into issuedDate from lib_borrow where roll_no = roll;
+    
+    -- Calculate the number of days since the issue date
+    select datediff(curdate(), issuedDate) into noofDays;
+
+    -- Determine fine based on the number of days
+    if noofDays > 15 and noofDays <= 30 then
+        set fine = noofDays * 5;
+        insert into Fine values(roll, curdate(), fine);
+    elseif noofDays > 30 then
+        set fine = noofDays * 50;
+        insert into Fine values(roll, curdate(), fine);
+    else
+        insert into Fine values(roll, curdate(), 0);
+    end if;
+
+    -- Update the status to "R" for the given roll number
+    update lib_borrow set statuss = 'R' where roll_no = roll;
 end$
 
 delimiter ;
