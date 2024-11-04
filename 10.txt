@@ -1,0 +1,22 @@
+test> use practicals;
+
+db.createCollection("Pract10")
+
+show dbs
+
+db.Pract10.insert([{id:1,'Name':"Satyam Shinde",Age: 20, 'Gender':"Male"},{id:2,'Name':"Vishal Shinde",Age: 21, 'Gender':"Male"},{id:3,'Name':"Sanika Yadgire",Age: 19, 'Gender':"Female"},{id:4,'Name':"Janhvi Thoke",Age: 20, 'Gender':"Female"}])
+
+db.Pract10.find()
+
+db.Pract10.createIndex({id:1})
+
+db.Pract10.getIndexes()
+
+db.Pract10.count();
+
+db.Pract10.aggregate([{$group:{_id:'$Gender', Total_Age:{$sum: '$Age'}}}])
+
+db.Pract10.aggregate([{$group:{_id:'$Gender', Total_Age:{$max: '$Age'}}}])
+
+db.Pract10.aggregate([{$group:{_id:'$Gender', Total_Age:{$min: '$Age'}}}])
+

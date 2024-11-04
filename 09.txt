@@ -1,0 +1,22 @@
+db.createCollection("student")
+
+# INSERT Operation
+db.student.insert({id:1,'Name':'Omkar','city':'Pune',age:20})
+WriteResult({ "nInserted" : 1 })
+db.student.insert({id:2,'Name':'Parth','city':'Nashik',age:22})
+WriteResult({ "nInserted" : 1 })
+
+# Show the documents
+db.student.find()
+
+# UPDATE the document
+db.student.update({'city':'Pune'},{$set:{'city':'Satara'}})
+
+# REMOVE the document
+db.student.remove({'Name':'Omkar'})
+
+# ASCENDING SORTING
+db.student.find().sort({Name:1})
+
+# DESCENDING SORTING
+db.student.find().sort({Name:-1})
