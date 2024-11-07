@@ -1,7 +1,6 @@
 import java.sql.*;
 import java.sql.DriverManager;
 public class connect {
-// JDBC driver name and database URL
 static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 static final String DB_URL = "jdbc:mysql://localhost:3306/ry?
 autoReconnect=true&useSSL=false";
@@ -9,12 +8,9 @@ public static void main(String[] args) {
 Connection conn = null;
 Statement stmt = null;
 try{
-//STEP 2: Register JDBC driver
 Class.forName("com.mysql.cj.jdbc.Driver");
-//STEP 3: Open a connection
 System.out.println("Connecting to database...");
 conn = DriverManager.getConnection(DB_URL,"root","mysql");
-//STEP 4: statement creation
 System.out.println("Creating statement...");
 stmt = conn.createStatement();
 String sql;

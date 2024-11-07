@@ -1,21 +1,5 @@
 db.createCollection("pract11")
-
-db.pract11.insertMany([
-...     { id: 1, Name: "John Doe", div: "A", Marks: 78 },
-...     { id: 2, Name: "Jane Smith", div: "B", Marks: 85 },
-...     { id: 3, Name: "Alice Brown", div: "C", Marks: 92 },
-...     { id: 4, Name: "Bob Johnson", div: "D", Marks: 67 },
-...     { id: 5, Name: "Charlie Davis", div: "A", Marks: 74 },
-...     { id: 6, Name: "Emily White", div: "B", Marks: 88 },
-...     { id: 7, Name: "Frank Green", div: "C", Marks: 95 },
-...     { id: 8, Name: "Grace Black", div: "D", Marks: 60 },
-...     { id: 9, Name: "Henry Clark", div: "A", Marks: 82 },
-...     { id: 10, Name: "Isabel Turner", div: "B", Marks: 76 }
-... ]);
-
-
+db.pract11.insertMany([{ id: 1, Name: "John Doe", div: "A", Marks: 78 },{ id: 2, Name: "Jane Smith", div: "B", Marks: 85 },{ id: 3, Name: "Alice Brown", div: "C", Marks: 92 },{ id: 4, Name: "Bob Johnson", div: "D", Marks: 67 },{ id: 5, Name: "Charlie Davis", div: "A", Marks: 74 },{ id: 6, Name: "Emily White", div: "B", Marks: 88 },{ id: 7, Name: "Frank Green", div: "C", Marks: 95 },{ id: 8, Name: "Grace Black", div: "D", Marks: 60 },{ id: 9, Name: "Henry Clark", div: "A", Marks: 82 },{ id: 10, Name: "Isabel Turner", div: "B", Marks: 76 }]);
 var map=function(){emit(this.div,this.Marks)}
-
 var reduce=function(div,Marks){return Array.sum(Marks)}
-
 db.pract11.mapReduce(map,reduce,{out:'ResCollection'})
